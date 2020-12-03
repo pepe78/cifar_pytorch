@@ -18,6 +18,12 @@ Min test J: 17.109975514933467
 
 Info about system:
 
+Python 3.8.5
+
+GCC 9.3.0
+
+Pytorch 1.7.0+cu110
+
 NVIDIA-SMI 455.38       
 
 Driver Version: 455.38       
