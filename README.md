@@ -11,3 +11,5 @@ Max test accuracy: 95.8
 Min train J: 0.6031531229382381
 
 Min test J: 17.109975514933467
+
+![DenseNet121 results](./results/DenseNet121.png)
