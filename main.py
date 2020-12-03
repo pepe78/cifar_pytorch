@@ -8,7 +8,9 @@ import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
 
-from models.densenet import DenseNet121
+from models.densenet import *
+from models.resnet import *
+from models.randomnet import *
 
 import os
 import argparse
@@ -52,7 +54,9 @@ testloader = torch.utils.data.DataLoader(
 
 # Model
 print('==> Building model..')
-net = DenseNet121()
+#net = DenseNet121()
+net = ResNet18()
+args.lr = 0.1
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
