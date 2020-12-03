@@ -1,4 +1,4 @@
-# cifar_pytorch
+# cifar pytorch
 
 Original script came from [https://github.com/kuangliu/pytorch-cifar](https://github.com/kuangliu/pytorch-cifar)
 
