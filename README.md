@@ -13,3 +13,17 @@ Min train J: 0.6031531229382381
 Min test J: 17.109975514933467
 
 ![DenseNet121 results](./results/DenseNet121.png)
+
+
+
+Info about system:
+
+NVIDIA-SMI 455.38       
+
+Driver Version: 455.38       
+
+CUDA Version: 11.1       
+
+Ubuntu 20.04.1 LTS
+
+GEFORCE RTX 3090
