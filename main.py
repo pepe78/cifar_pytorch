@@ -10,7 +10,7 @@ import torchvision.transforms as transforms
 
 from models.densenet import *
 from models.resnet import *
-from models.randomnet import *
+#from models.randomnet import *
 
 import os
 import argparse
