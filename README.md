@@ -2,7 +2,7 @@
 
 Original script came from [https://github.com/kuangliu/pytorch-cifar](https://github.com/kuangliu/pytorch-cifar)
 
-Results achieved with [densenet](https://arxiv.org/abs/1608.06993) provided by kuangliu (seems to differ with pytorch's version of densenet):
+Results achieved with [densenet121](https://arxiv.org/abs/1608.06993) provided by kuangliu (seems to differ with pytorch's version of densenet):
 
 Max train accuracy: 99.998 %
 
@@ -14,7 +14,7 @@ Min test J: 17.109975514933467
 
 ![DenseNet121 results](./results/DenseNet121.png)
 
-Results for [RESNET](https://arxiv.org/pdf/1512.03385.pdf):
+Results for [RESNET18](https://arxiv.org/pdf/1512.03385.pdf):
 
 Max train accuracy: 100.0 %
 
