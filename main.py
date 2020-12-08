@@ -10,12 +10,12 @@ import torchvision.transforms as transforms
 
 from models.densenet import *
 from models.resnet import *
-#from models.randomnet import *
 
 import os
 import argparse
 
 from utils import progress_bar
+from disp_results import display_results
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
@@ -45,12 +45,12 @@ transform_test = transforms.Compose([
 trainset = torchvision.datasets.CIFAR10(
     root='./data', train=True, download=True, transform=transform_train)
 trainloader = torch.utils.data.DataLoader(
-    trainset, batch_size=128, shuffle=True, num_workers=2)
+    trainset, batch_size=128, shuffle=True, num_workers=12)
 
 testset = torchvision.datasets.CIFAR10(
     root='./data', train=False, download=True, transform=transform_test)
 testloader = torch.utils.data.DataLoader(
-    testset, batch_size=100, shuffle=False, num_workers=2)
+    testset, batch_size=100, shuffle=False, num_workers=12)
 
 # Model
 print('==> Building model..')
@@ -83,6 +83,7 @@ def train(epoch):
     correct = 0
     total = 0
     for batch_idx, (inputs, targets) in enumerate(trainloader):
+        #print(inputs.shape)
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
         outputs = net(inputs)
@@ -98,7 +99,7 @@ def train(epoch):
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
                      % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
-    return train_loss, 100.*correct/total
+    return train_loss / len(trainloader) / trainloader.batch_size, 100.*correct/total
 
 
 def test(epoch):
@@ -135,12 +136,23 @@ def test(epoch):
         torch.save(state, './checkpoint/ckpt.pth')
         best_acc = acc
     
-    return test_loss, 100.*correct/total
+    return test_loss / len(testloader) / trainloader.batch_size, 100.*correct/total
 
+tr_ls = []
+tr_as = []
+te_ls = []
+te_as = []
 
 for epoch in range(start_epoch, start_epoch+1000):
     tr_l, tr_a = train(epoch)
     te_l, te_a = test(epoch)
+    
+    
+    tr_ls.append(tr_l)
+    tr_as.append(tr_a)
+    te_ls.append(te_l)
+    te_as.append(te_a)
+    display_results(tr_as,te_as,tr_ls,te_ls)
     
     file1 = open("debug.txt", "a")  # append mode 
     file1.write(f"{epoch},{tr_l},{tr_a},{te_l},{te_a}\n") 
