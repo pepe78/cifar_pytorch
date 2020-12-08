@@ -56,6 +56,7 @@ testloader = torch.utils.data.DataLoader(
 print('==> Building model..')
 #net = DenseNet121()
 net = ResNet18()
+
 args.lr = 0.1
 net = net.to(device)
 if device == 'cuda':
@@ -147,12 +148,12 @@ for epoch in range(start_epoch, start_epoch+1000):
     tr_l, tr_a = train(epoch)
     te_l, te_a = test(epoch)
     
-    
     tr_ls.append(tr_l)
     tr_as.append(tr_a)
     te_ls.append(te_l)
     te_as.append(te_a)
     display_results(tr_as,te_as,tr_ls,te_ls)
+    print(max(tr_as), "% ", max(te_as), "%")
     
     file1 = open("debug.txt", "a")  # append mode 
     file1.write(f"{epoch},{tr_l},{tr_a},{te_l},{te_a}\n") 
