@@ -26,6 +26,9 @@ Min test J: 17.09829800389707
 
 ![RESNET18 results](./results/RESNET18.png)
 
+Looking at the features coming out of resnet for training (upper graph) and testing (lower graph) (proc_feats.py):
+
+![clustered features](./results/features_resnet.png)
 
 Info about system:
 
