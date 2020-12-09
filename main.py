@@ -83,8 +83,10 @@ def train(epoch):
     train_loss = 0
     correct = 0
     total = 0
+    H = []
+    Y = []
     for batch_idx, (inputs, targets) in enumerate(trainloader):
-        #print(inputs.shape)
+        Y.append(targets)
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
         outputs = net(inputs)
@@ -100,7 +102,12 @@ def train(epoch):
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
                      % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
-    return train_loss / len(trainloader) / trainloader.batch_size, 100.*correct/total
+        H.append(outputs.to('cpu'))
+
+    H = torch.cat(H,0).detach().numpy()
+    Y = torch.cat(Y,0).numpy()
+
+    return train_loss / len(trainloader) / trainloader.batch_size, 100.*correct/total, H, Y
 
 
 def test(epoch):
@@ -109,8 +116,11 @@ def test(epoch):
     test_loss = 0
     correct = 0
     total = 0
+    H = []
+    Y = []
     with torch.no_grad():
         for batch_idx, (inputs, targets) in enumerate(testloader):
+            Y.append(targets)
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
@@ -123,6 +133,8 @@ def test(epoch):
             progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
                          % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
+            H.append(outputs.to('cpu'))
+            
     # Save checkpoint.
     acc = 100.*correct/total
     if acc > best_acc:
@@ -137,7 +149,10 @@ def test(epoch):
         torch.save(state, './checkpoint/ckpt.pth')
         best_acc = acc
     
-    return test_loss / len(testloader) / trainloader.batch_size, 100.*correct/total
+    H = torch.cat(H,0).detach().numpy()
+    Y = torch.cat(Y,0).numpy()
+
+    return test_loss / len(testloader) / trainloader.batch_size, 100.*correct/total, H, Y
 
 tr_ls = []
 tr_as = []
@@ -145,14 +160,14 @@ te_ls = []
 te_as = []
 
 for epoch in range(start_epoch, start_epoch+1000):
-    tr_l, tr_a = train(epoch)
-    te_l, te_a = test(epoch)
+    tr_l, tr_a, tr_H, tr_Y = train(epoch)
+    te_l, te_a, te_H, te_Y = test(epoch)
     
     tr_ls.append(tr_l)
     tr_as.append(tr_a)
     te_ls.append(te_l)
     te_as.append(te_a)
-    display_results(tr_as,te_as,tr_ls,te_ls)
+    display_results(tr_as,te_as,tr_ls,te_ls, False, tr_H, tr_Y, te_H, te_Y, epoch)
     print(max(tr_as), "% ", max(te_as), "%")
     
     file1 = open("debug.txt", "a")  # append mode 
