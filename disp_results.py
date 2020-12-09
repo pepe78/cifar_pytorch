@@ -37,6 +37,9 @@ def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None
 def display_clusters(H,Y,H_t,Y_t):
     colors = ['b','g','r','c','m','y','indigo','lime','aqua','peru']
     
+    H = np.concatenate((H,np.ones((H.shape[0],1))),axis=1)
+    H_t = np.concatenate((H_t,np.ones((H_t.shape[0],1))),axis=1)
+    
     Yc = []
     for i in range(len(Y)):
         Yc.append(colors[Y[i]])
