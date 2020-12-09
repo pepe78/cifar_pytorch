@@ -30,6 +30,10 @@ Looking at the features coming out of resnet for training (upper graph) and test
 
 ![clustered features](./results/features_resnet.png)
 
+Or in 1D (proc_feats_1d.py):
+
+![clustered features](./results/features_resnet_1d.png)
+
 Info about system:
 
 Python 3.8.5
