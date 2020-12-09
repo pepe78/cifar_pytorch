@@ -34,6 +34,12 @@ Or in 1D (proc_feats_1d.py):
 
 ![clustered features](./results/features_resnet_1d.png)
 
+And in 3D (proc_feats_3d.py):
+
+![clustered features](./results/features_resnet_3d_train.png)
+
+![clustered features](./results/features_resnet_3d_test.png)
+
 Info about system:
 
 Python 3.8.5
