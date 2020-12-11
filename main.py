@@ -10,6 +10,7 @@ import torchvision.transforms as transforms
 
 from models.densenet import *
 from models.resnet import *
+from models.wrn import *
 
 import os
 import argparse
@@ -55,7 +56,8 @@ testloader = torch.utils.data.DataLoader(
 # Model
 print('==> Building model..')
 #net = DenseNet121()
-net = ResNet18()
+#net = ResNet18()
+net = WideResNet(16, 8, 0.0, in_channels=3, labels=10)
 
 args.lr = 0.1
 net = net.to(device)
@@ -159,7 +161,7 @@ tr_as = []
 te_ls = []
 te_as = []
 
-for epoch in range(start_epoch, start_epoch+1000):
+for epoch in range(start_epoch, start_epoch+225):
     tr_l, tr_a, tr_H, tr_Y = train(epoch)
     te_l, te_a, te_H, te_Y = test(epoch)
     
