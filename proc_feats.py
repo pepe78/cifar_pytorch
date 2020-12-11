@@ -48,6 +48,7 @@ while True:
     print(trans)
 
     YY = []
+    # 10! possibilities - so just pick one as space is huge
     for i in range(len(Y)):
         w = trans[Y[i]]
         tmp = [m.cos(w * 2.0 * m.pi / 10.0),m.sin(w * 2.0 * m.pi / 10.0)]

@@ -5,6 +5,10 @@ import numpy as np
 import math as m
 import random
 
+# ideally you want to go to num_class = 10 < 2^4 = 16 (4 dimensions, but we have only ability to observe 3 dimensions with 2 eyes)
+
+
+# find points on ball which have roughly same distances and same 1 distance to (0,0)
 def getBetterP():
     p = np.random.rand(10,3)*1.0-0.5
     while True:
