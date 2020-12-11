@@ -40,6 +40,7 @@ maxcor = 0
 while True:
     trans = [-1 for i in range(10)]
 
+    # 10! possibilities - so just pick one as space is huge
     for i in range(10):
         r = random.randrange(10)
         while trans[r] != -1:
@@ -48,7 +49,6 @@ while True:
     print(trans)
 
     YY = []
-    # 10! possibilities - so just pick one as space is huge
     for i in range(len(Y)):
         w = trans[Y[i]]
         tmp = [m.cos(w * 2.0 * m.pi / 10.0),m.sin(w * 2.0 * m.pi / 10.0)]
