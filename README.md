@@ -40,9 +40,7 @@ And in 3D (proc_feats_3d.py):
 
 Info about system:
 
-Python 3.8.5
-
-GCC 9.3.0, Pytorch 1.7.0+cu110, NVIDIA-SMI 455.38, Driver Version: 455.38, CUDA Version: 11.1, Ubuntu 20.04.1 LTS, GEFORCE RTX 3090
+Python 3.8.5, GCC 9.3.0, Pytorch 1.7.0+cu110, NVIDIA-SMI 455.38, Driver Version: 455.38, CUDA Version: 11.1, Ubuntu 20.04.1 LTS, GEFORCE RTX 3090
 
 
 There are also other ways how to display clusters:
