@@ -1,6 +1,6 @@
 # cifar pytorch
 
-Original script came from [https://github.com/kuangliu/pytorch-cifar](https://github.com/kuangliu/pytorch-cifar)
+Original script and models from Resnet & Densenet came from [https://github.com/kuangliu/pytorch-cifar](https://github.com/kuangliu/pytorch-cifar)
 
 Results for [WideResnet](https://arxiv.org/pdf/1605.07146.pdf) with model [https://github.com/davda54/sam/blob/main/example/model/wide_res_net.py](https://github.com/davda54/sam/blob/main/example/model/wide_res_net.py):
 
