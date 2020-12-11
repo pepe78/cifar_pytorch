@@ -13,14 +13,14 @@ def addsubgraph(which, t, q1, q2, lab):
 	plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left', ncol=2, mode="expand", borderaxespad=0.)
 		   
 def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None, te_H = None, te_Y = None, epoch = 0):
-    plt.figure(num='Progress of training', figsize = ((15,12) if tr_H==None else (25,12)))
+    plt.figure(num='Progress of training', figsize = (15,12) if tr_H is None else (25,12))
     plt.clf()
 
     t = range(len(a1))
-    addsubgraph((221 if tr_H==None else 241),t,a1,a2,'accuracy')
-    addsubgraph((223 if tr_H==None else 245),t,e1,e2,'error')
-    addsubgraph((222 if tr_H==None else 242),t[len(t)//2:],a1[len(t)//2:],a2[len(t)//2:],'accuracy')
-    addsubgraph((224 if tr_H==None else 246),t[len(t)//2:],e1[len(t)//2:],e2[len(t)//2:],'error')
+    addsubgraph(221 if tr_H is None else 241,t,a1,a2,'accuracy')
+    addsubgraph(223 if tr_H is None else 245,t,e1,e2,'error')
+    addsubgraph(222 if tr_H is None else 242,t[len(t)//2:],a1[len(t)//2:],a2[len(t)//2:],'accuracy')
+    addsubgraph(224 if tr_H is None else 246,t[len(t)//2:],e1[len(t)//2:],e2[len(t)//2:],'error')
     
     if tr_H is not None:
         display_clusters(tr_H, tr_Y, te_H, te_Y)
