@@ -2,23 +2,21 @@
 
 Original script came from [https://github.com/kuangliu/pytorch-cifar](https://github.com/kuangliu/pytorch-cifar)
 
-Results achieved with [densenet121](https://arxiv.org/abs/1608.06993) provided by kuangliu (seems to differ with pytorch's version of densenet):
+Results for [WideResnet](https://arxiv.org/pdf/1605.07146.pdf) with model [https://github.com/davda54/sam/blob/main/example/model/wide_res_net.py](https://github.com/davda54/sam/blob/main/example/model/wide_res_net.py):
+
+Max test accuracy: 96.16 %
+
+![WideNet results](./results/WideResnet.png)
+
+Results achieved with [densenet121](https://arxiv.org/abs/1608.06993):
 
 Max test accuracy: 95.8 %
-
-Min train J: 0.6031531229382381
-
-Min test J: 17.109975514933467
 
 ![DenseNet121 results](./results/DenseNet121.png)
 
 Results for [RESNET18](https://arxiv.org/pdf/1512.03385.pdf):
 
 Max test accuracy: ~ 95.3 - 95.8 % (different runs give different results a bit)
-
-Min train J: 0.6362376089673489
-
-Min test J: 17.09829800389707
 
 ![RESNET18 results](./results/RESNET18.png)
 
