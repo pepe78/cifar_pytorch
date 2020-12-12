@@ -34,7 +34,9 @@ And in 3D (proc_feats_3d.py):
 
 ![clustered features](./results/features_resnet_3d_test.png)
 
-[Video of feature evolution](https://www.youtube.com/watch?v=WbPf8EG-JnQ)
+[Video of feature evolution in 1D, 2D](https://www.youtube.com/watch?v=WbPf8EG-JnQ)
+
+[Video of feature evolution in 1D, 2D, 3D](https://www.youtube.com/watch?v=k9tVFuk_XW4)
 
 Info about system:
 
