@@ -24,7 +24,7 @@ def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None
     addsubgraph(figshape, (1,1),t[len(t)//2:],e1[len(t)//2:],e2[len(t)//2:],'error')
     
     if tr_H is not None:
-        display_clusters(tr_H, tr_Y, te_H, te_Y, figshape)
+        display_clusters(tr_H, tr_Y, te_H, te_Y, figshape, epoch)
     
     if waitForGraph:
         plt.show()
@@ -34,7 +34,7 @@ def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None
         #plt.savefig(f"epoch_{epoch}.png")
         plt.pause(0.01)
 
-def display_clusters(H,Y,H_t,Y_t, figshape):
+def display_clusters(H,Y,H_t,Y_t, figshape, epoch):
     colors = ['b','g','r','c','m','y','indigo','lime','aqua','peru']
     
     H = np.concatenate((H,np.ones((H.shape[0],1))),axis=1)
@@ -114,6 +114,7 @@ def display_clusters(H,Y,H_t,Y_t, figshape):
     ax.w_xaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
     ax.w_yaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
     ax.w_zaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
+    ax.view_init(30, epoch)
     
     Ys = np.matmul(H,x)
     ax.scatter(Ys[:,0], Ys[:,1], Ys[:,2], c=Yc, s=0.5, marker='o')
@@ -122,6 +123,7 @@ def display_clusters(H,Y,H_t,Y_t, figshape):
     ax.w_xaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
     ax.w_yaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
     ax.w_zaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
+    ax.view_init(30, epoch)
     
     Ys_t = np.matmul(H_t,x)
     ax.scatter(Ys_t[:,0], Ys_t[:,1], Ys_t[:,2], c=Yc_t, s=0.5, marker='o')
