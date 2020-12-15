@@ -68,11 +68,11 @@ def display_clusters(H,Y,H_t,Y_t, figshape, epoch):
 
     Ys = np.matmul(H,x)
     plt.subplot2grid(figshape,(0,2))
-    plt.scatter(Ys[:,0], Ys[:,1], s=0.2, c=Yc)
+    plt.scatter(Ys[:,0], Ys[:,1], s=0.2, c=Yc, alpha=0.3)
     
     Ys_t = np.matmul(H_t,x)
     plt.subplot2grid(figshape,(1,2))
-    plt.scatter(Ys_t[:,0], Ys_t[:,1], s=0.2, c=Yc_t)
+    plt.scatter(Ys_t[:,0], Ys_t[:,1], s=0.2, c=Yc_t, alpha=0.3)
 
 #    YY = []
 #    for i in range(len(Y)):
