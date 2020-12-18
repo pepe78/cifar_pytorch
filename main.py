@@ -53,11 +53,29 @@ testset = torchvision.datasets.CIFAR10(
 testloader = torch.utils.data.DataLoader(
     testset, batch_size=100, shuffle=False, num_workers=12)
 
+# loss, which is minus log of main (target) probability
+# facebook/pytorch calls it "cross entropy" - I probably wouldn't go that far
+# gives same results as their's - tested
+def log_sm_loss(input, target):
+    eout = torch.exp(input)
+    seout = torch.sum(eout,dim=1)
+
+    loss = torch.log(seout)
+    tmp = torch.zeros(input.shape, requires_grad=False)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 1.0
+    
+    tmp = tmp.to('cuda')
+    tmp *= input
+    loss -= torch.sum(tmp,dim=1)
+    
+    return loss.sum() / target.shape[0]
+    
 # Model
 print('==> Building model..')
 #net = DenseNet121()
-#net = ResNet18()
-net = WideResNet(16, 8, 0.0, in_channels=3, labels=10)
+net = ResNet18()
+#net = WideResNet(16, 8, 0.0, in_channels=3, labels=10)
 
 args.lr = 0.1
 net = net.to(device)
@@ -93,6 +111,7 @@ def train(epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, targets)
+        #loss = log_sm_loss(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -126,6 +145,7 @@ def test(epoch):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
+            #loss = log_sm_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
