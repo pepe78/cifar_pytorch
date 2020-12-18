@@ -54,7 +54,7 @@ testloader = torch.utils.data.DataLoader(
     testset, batch_size=100, shuffle=False, num_workers=12)
 
 # loss, which is minus log of main (target) probability
-# facebook/pytorch calls it "cross entropy" - I probably wouldn't go that far
+# pytorch calls it cross entropy loss
 # gives same results as their's - tested
 def log_sm_loss(input, target):
     eout = torch.exp(input)
