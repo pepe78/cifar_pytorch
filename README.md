@@ -40,13 +40,15 @@ And in 3D (proc_feats_3d.py):
 
 Looking at features separately and their values for different classes (python3 play_feats.py), it seems like one feature is affiliated with several classes and they might be in a bit different spectrum as well:
 
-![feat_0](./results/feat_0.png)
+![feat_0](./results/feat_new_0.png)
 
-![feat_1](./results/feat_1.png)
+![feat_1](./results/feat_new_1.png)
 
-![feat_2](./results/feat_2.png)
+![feat_2](./results/feat_new_2.png)
 
-![feat_3](./results/feat_3.png)
+![feat_3](./results/feat_new_3.png)
+
+![feat_4](./results/feat_new_4.png)
 
 Info about system:
 

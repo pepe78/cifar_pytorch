@@ -27,9 +27,35 @@ def readfile(fn):
     
     return np.array(H),Y,Yc
 
+def getcounts(vals, Y, minval, maxval, numclusters):
+    counts = [[0.0 for _ in range(numclusters)] for _ in range(10)]
+    for l in range(len(vals)):
+        num = int((vals[l] - minval) * (numclusters + 0.0) / (maxval-minval))
+        counts[Y[l]][num] += 1.0
+    
+    counts = np.array(counts)
+    for l in range(10):
+        counts[l,:] *= 1.0/max(counts[l,:])
+        
+    return counts
+
 H,Y,Yc = readfile('feats_train.txt')
-#H_t,Y_t,Yc_t = readfile('feats_test.txt')
+H_t,Y_t,Yc_t = readfile('feats_test.txt')
 
 for i in range(512):
-    plt.scatter(H[:,i], Y[:], s=0.5, marker='o')
+    vals_train = H[:,i]
+    vals_test = H_t[:,i]
+    
+    minval = min(min(vals_train),min(vals_test))
+    maxval = max(max(vals_train),max(vals_test))
+    
+    maxval += 0.001 * (maxval-minval)
+    
+    numclusters = 300
+    counts_train = getcounts(vals_train, Y, minval, maxval, numclusters)
+    counts_test = getcounts(vals_test, Y_t, minval, maxval, numclusters)    
+    
+    for l in range(10):
+        plt.plot([i for i in range(numclusters)], counts_train[l,:] + l, 'b', alpha = 0.8)
+        plt.plot([i for i in range(numclusters)], counts_test[l,:] + l, 'r', alpha = 0.8)
     plt.show()
