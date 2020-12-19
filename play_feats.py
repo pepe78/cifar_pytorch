@@ -17,7 +17,7 @@ def readfile(fn):
         pn = int(parts[0])
 
         tmp = []
-        for i in range(512):
+        for i in range(len(parts)-1):
             t = float(parts[1+i])
             tmp.append(t)
         H.append(tmp)
@@ -42,7 +42,10 @@ def getcounts(vals, Y, minval, maxval, numclusters):
 H,Y,Yc = readfile('feats_train.txt')
 H_t,Y_t,Yc_t = readfile('feats_test.txt')
 
-for i in range(512):
+#H,Y,Yc = readfile('probs_train.txt')
+#H_t,Y_t,Yc_t = readfile('probs_test.txt')
+
+for i in range(len(H[0])):
     vals_train = H[:,i]
     vals_test = H_t[:,i]
     
@@ -56,6 +59,6 @@ for i in range(512):
     counts_test = getcounts(vals_test, Y_t, minval, maxval, numclusters)    
     
     for l in range(10):
-        plt.plot([i for i in range(numclusters)], counts_train[l,:] + l, 'b', alpha = 0.8)
-        plt.plot([i for i in range(numclusters)], counts_test[l,:] + l, 'r', alpha = 0.8)
+        plt.plot([minval + (i + 0.0) *(maxval-minval) / (numclusters + 0.0) for i in range(numclusters)], counts_train[l,:] + l, 'b', alpha = 0.8)
+        plt.plot([minval + (i + 0.0) *(maxval-minval) / (numclusters + 0.0) for i in range(numclusters)], counts_test[l,:] + l, 'r', alpha = 0.8)
     plt.show()
