@@ -101,7 +101,7 @@ def bell_curves_intersection_loss(input, target):
     tmp = tmp.to('cuda')
     tmp = input - tmp
     tmp2 = tmp * tmp
-    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1])
+    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1] - 1.0)
     tmp4 = torch.sqrt(tmp3)
     
     tmp5 = torch.tensor(range(10001), requires_grad=False).to('cuda') * 14.0 / 10000.0 - 3.0
