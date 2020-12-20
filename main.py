@@ -75,7 +75,7 @@ def log_sm_loss(input, target):
 # works pretty well, one run gave me 95.35 % accuracy [95.3 - 95.8 % for log_sm_loss]
 # second run 95.34 % accuracy
 def std_loss(input, target):
-    # here is bit of cheating - I ask for averages to be -1 (incorrect) and 9 correct
+    # here is bit of cheating - I ask for outputs to be -1 for incorrect and 9 for correct cases
     # could beverified if other values work as well or
     # seems like these two values can be arbitrary, so picking nicer numbers
     tmp = torch.ones(input.shape, requires_grad=False) * (-0.5)
