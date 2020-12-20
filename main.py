@@ -70,7 +70,24 @@ def log_sm_loss(input, target):
     loss -= torch.sum(tmp,dim=1)
     
     return loss.sum() / target.shape[0]
+
+# standard deviation loss
+# works pretty well, one run gave me 95.35 % accuracy [95.3 - 95.8 % for log_sm_loss]
+def std_loss(input, target):
+    # here is bit of cheating - I ask for averages to be -1 (incorrect) and 9 correct
+    # could beverified if other values work as well or
+    tmp = torch.ones(input.shape, requires_grad=False) * (-1.0)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 9.0
     
+    tmp = tmp.to('cuda')
+    tmp = input - tmp
+    tmp2 = tmp * tmp
+    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1])
+    tmp4 = torch.sqrt(tmp3)
+    
+    return tmp4
+
 # Model
 print('==> Building model..')
 #net = DenseNet121()
@@ -111,7 +128,7 @@ def train(epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, targets)
-        #loss = log_sm_loss(outputs, targets)
+        #loss = std_loss(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -145,7 +162,7 @@ def test(epoch):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
-            #loss = log_sm_loss(outputs, targets)
+            #loss = std_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
