@@ -162,9 +162,9 @@ def test(epoch):
         for batch_idx, (inputs, targets) in enumerate(testloader):
             Y.append(targets)
             inputs, targets = inputs.to(device), targets.to(device)
-            #outputs = net(inputs)
+            outputs = net(inputs)
             loss = criterion(outputs, targets)
-            loss = std_loss(outputs, targets)
+            #loss = std_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
