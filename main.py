@@ -73,12 +73,14 @@ def log_sm_loss(input, target):
 
 # standard deviation loss
 # works pretty well, one run gave me 95.35 % accuracy [95.3 - 95.8 % for log_sm_loss]
+# second run 95.34 % accuracy
 def std_loss(input, target):
     # here is bit of cheating - I ask for averages to be -1 (incorrect) and 9 correct
     # could beverified if other values work as well or
-    tmp = torch.ones(input.shape, requires_grad=False) * (-1.0)
+    # seems like these two values can be arbitrary, so picking nicer numbers
+    tmp = torch.ones(input.shape, requires_grad=False) * (-0.5)
     for i in range(input.shape[0]):
-        tmp[i,target[i]] = 9.0
+        tmp[i,target[i]] = 0.5
     
     tmp = tmp.to('cuda')
     tmp = input - tmp
@@ -160,9 +162,9 @@ def test(epoch):
         for batch_idx, (inputs, targets) in enumerate(testloader):
             Y.append(targets)
             inputs, targets = inputs.to(device), targets.to(device)
-            outputs = net(inputs)
+            #outputs = net(inputs)
             loss = criterion(outputs, targets)
-            #loss = std_loss(outputs, targets)
+            loss = std_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
