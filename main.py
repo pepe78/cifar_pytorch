@@ -7,6 +7,7 @@ import torch.backends.cudnn as cudnn
 
 import torchvision
 import torchvision.transforms as transforms
+import math
 
 from models.densenet import *
 from models.resnet import *
@@ -76,7 +77,7 @@ def log_sm_loss(input, target):
 # second run 95.34 % accuracy
 def std_loss(input, target):
     # here is bit of cheating - I ask for outputs to be -1 for incorrect and 9 for correct cases
-    # could beverified if other values work as well or
+    # could be verified if other values work as well or
     # seems like these two values can be arbitrary, so picking nicer numbers
     tmp = torch.ones(input.shape, requires_grad=False) * (-0.5)
     for i in range(input.shape[0]):
@@ -85,10 +86,38 @@ def std_loss(input, target):
     tmp = tmp.to('cuda')
     tmp = input - tmp
     tmp2 = tmp * tmp
-    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1])
+    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1] - 1.0)
     tmp4 = torch.sqrt(tmp3)
     
     return tmp4
+
+# this is actually working
+# accuracy ~ 93.89 % - needs more work [like p(x>y) = p(x-y>0) instead of interscetion?]
+def bell_curves_intersection_loss(input, target):
+    tmp = torch.ones(input.shape, requires_grad=False) * (-1.0)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 9.0
+    
+    tmp = tmp.to('cuda')
+    tmp = input - tmp
+    tmp2 = tmp * tmp
+    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1])
+    tmp4 = torch.sqrt(tmp3)
+    
+    tmp5 = torch.tensor(range(10001), requires_grad=False).to('cuda') * 14.0 / 10000.0 - 3.0
+    
+    tmp6 = (tmp5 + 1.0) / tmp4
+    tmp7 = torch.exp(-0.5 * tmp6 * tmp6) / (tmp4 * math.sqrt(2.0 * math.pi))
+    tmp7 = tmp7.view(-1,1)
+
+    tmp8 = (tmp5 - 9.0) / tmp4
+    tmp9 = torch.exp(-0.5 * tmp8 * tmp8) / (tmp4 * math.sqrt(2.0 * math.pi))
+    tmp9 = tmp9.view(-1,1)
+    
+    tmp10 = torch.minimum(tmp7,tmp9).sum()
+    tmp11 = torch.maximum(tmp7,tmp9).sum()
+    
+    return tmp10 / tmp11
 
 # Model
 print('==> Building model..')
