@@ -79,13 +79,15 @@ def diff_probsX_loss(input, target):
     avF = av1 - av2
     stdF = torch.sqrt(stdP1+stdP2)
     
-    tmp8 = torch.tensor(range(10001), requires_grad=False).to('cuda') * 20.0 / 10000.0
+    
+    mv = avF + math.sqrt(10) * stdF # this leads ot exp(-5.0), which is only 0.006737946999085
+    tmp8 = torch.tensor(range(10001), requires_grad=False).to('cuda') * mv / 10000.0
     
     tmp9 = (tmp8 - avF) / stdF
     tmp10 = torch.exp(-0.5 * tmp9 * tmp9) / (stdF * math.sqrt(2.0 * math.pi))
     tmp10 = tmp10.view(-1,1)
 
-    tmp11 = tmp10.sum() * 20.0 / 10000.0
+    tmp11 = tmp10.sum() * mv / 10000.0
     
     #print(tmp11)
     return 1.0 - tmp11
