@@ -91,6 +91,10 @@ def std_loss(input, target):
     
     return tmp4
 
+########################################################################################################
+# all these might need better than normal distribution?                                                #
+########################################################################################################
+
 # this is actually working
 # accuracy ~ 93.89 % - needs more work [like p(x>y) = p(x-y>0) instead of interscetion?]
 # second run gave around ~ 93.85 %
@@ -167,6 +171,10 @@ def log_diff_probs_loss(input, target):
     #print(tmp10)
     return - torch.log(tmp10)
 
+########################################################################################################
+# all these might need better than normal distribution?                                                #
+########################################################################################################
+
 # Model
 print('==> Building model..')
 #net = DenseNet121()
@@ -207,7 +215,7 @@ def train(epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, targets)
-        #loss = log_diff_probs_loss(outputs, targets)
+        #loss = std_loss(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -241,7 +249,7 @@ def test(epoch):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
-            #loss = log_diff_probs_loss(outputs, targets)
+            #loss = std_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
