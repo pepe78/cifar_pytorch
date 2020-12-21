@@ -51,6 +51,45 @@ def std_loss(input, target):
 # all these might be better with some other distribution than normal?                                #
 ########################################################################################################
 
+# more generic P(X-Y > 0)
+# compute average of wrong value and correct value separately and comute their stds
+# plug into formulas and go (seems to be working)
+# this way I don't have to set what values I want for wrong and correct cases - it should figure on its own
+def diff_probsX_loss(input, target):
+    tmp = torch.zeros(input.shape, requires_grad=False)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 1.0
+    
+    tmp = tmp.to('cuda')
+    
+    tmp2 = tmp * input
+    av1 = tmp2.sum() / (input.shape[0] + 0.0)
+    
+    tmp3 = (1.0 - tmp) * input
+    av2 = tmp3.sum() / (input.shape[0] * (input.shape[1] - 1.0))
+    
+    tmp4 = tmp2 - tmp * av1
+    tmp5 = tmp4 * tmp4
+    stdP1 = tmp5.sum() / (input.shape[0] - 1.0)
+    
+    tmp6 = tmp3 - (1.0 - tmp) * av2
+    tmp7 = tmp6 * tmp6
+    stdP2 = tmp7.sum() / (input.shape[0] * (input.shape[1] - 1.0) - 1.0)
+    
+    avF = av1 - av2
+    stdF = torch.sqrt(stdP1+stdP2)
+    
+    tmp8 = torch.tensor(range(10001), requires_grad=False).to('cuda') * 20.0 / 10000.0
+    
+    tmp9 = (tmp8 - avF) / stdF
+    tmp10 = torch.exp(-0.5 * tmp9 * tmp9) / (stdF * math.sqrt(2.0 * math.pi))
+    tmp10 = tmp10.view(-1,1)
+
+    tmp11 = tmp10.sum() * 20.0 / 10000.0
+    
+    #print(tmp11)
+    return 1.0 - tmp11
+
 # this is actually working
 # accuracy ~ 93.89 % - needs more work [like p(x>y) = p(x-y>0) instead of interscetion?]
 # second run gave around ~ 93.85 %
