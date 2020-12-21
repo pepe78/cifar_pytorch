@@ -144,6 +144,29 @@ def diff_probs_loss(input, target):
     #print(tmp10)
     return 1.0 - tmp10
 
+# ~ 92.58 % - might need to run longer than 200 epochs?
+def log_diff_probs_loss(input, target):
+    tmp = torch.ones(input.shape, requires_grad=False) * (-1.0)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 9.0
+    
+    tmp = tmp.to('cuda')
+    tmp = input - tmp
+    tmp2 = tmp * tmp
+    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1] - 1.0)
+    tmp4 = torch.sqrt(tmp3) * math.sqrt(2)
+    
+    tmp5 = torch.tensor(range(10001), requires_grad=False).to('cuda') * 20.0 / 10000.0
+    
+    tmp6 = (tmp5 - 10.0) / tmp4
+    tmp7 = torch.exp(-0.5 * tmp6 * tmp6) / (tmp4 * math.sqrt(2.0 * math.pi))
+    tmp7 = tmp7.view(-1,1)
+
+    tmp10 = tmp7.sum() * 20.0 / 10000.0
+    
+    #print(tmp10)
+    return - torch.log(tmp10)
+
 # Model
 print('==> Building model..')
 #net = DenseNet121()
@@ -184,7 +207,7 @@ def train(epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, targets)
-        #loss = diff_probs_loss(outputs, targets)
+        #loss = log_diff_probs_loss(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -218,7 +241,7 @@ def test(epoch):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
-            #loss = diff_probs_loss(outputs, targets)
+            #loss = log_diff_probs_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
