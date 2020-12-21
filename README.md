@@ -40,6 +40,8 @@ And in 3D (proc_feats_3d.py):
 
 [Video for cross entropy evolution](https://www.youtube.com/watch?v=RN7T2PEjd6g)
 
+[Video for standard deviation evolution](https://www.youtube.com/watch?v=CeKXZEX3_Fs)
+
 Looking at features separately and their values for different classes (python3 play_feats.py), it seems like one feature is affiliated with several classes and they might be in a bit different spectrum as well (blue - train, red - test):
 
 ![feat_0](./results/feat_new_0.png)
