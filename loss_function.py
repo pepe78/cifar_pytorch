@@ -57,7 +57,6 @@ def std_loss(input, target):
 # this way I don't have to set what values I want for wrong and correct cases - it should figure on its own
 
 # better settings:
-# args.lr = 0.01 (it was too "jumpy")
 # batch_size=256 (more stable estimates)
 def diff_probsX_loss(input, target):
     tmp = torch.zeros(input.shape, requires_grad=False)
