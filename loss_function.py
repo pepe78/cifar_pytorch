@@ -28,7 +28,7 @@ def log_sm_loss(input, target):
     return loss.sum() / target.shape[0]
 
 # standard deviation loss
-# works pretty well, one run gave me 95.35 % accuracy [95.3 - 95.8 % for log_sm_loss]
+# works pretty well, one run gave me 95.35 % accuracy [95.2 - 95.8 % for log_sm_loss]
 # second run 95.34 % accuracy
 def std_loss(input, target):
     # here is bit of cheating - I ask for outputs to be -1 for incorrect and 9 for correct cases
@@ -47,7 +47,7 @@ def std_loss(input, target):
     return tmp4
 
 ########################################################################################################
-# all these might need better than normal distribution?                                                #
+# all these might need better with some other distribution than normal?                                #
 ########################################################################################################
 
 # this is actually working
@@ -127,6 +127,6 @@ def log_diff_probs_loss(input, target):
     return - torch.log(tmp10)
 
 ########################################################################################################
-# all these might need better than normal distribution?                                                #
+# all these might need better with some other distribution than normal?                                #
 ########################################################################################################
 
