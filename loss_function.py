@@ -47,7 +47,7 @@ def std_loss(input, target):
     return tmp4
 
 ########################################################################################################
-# all these might need better with some other distribution than normal?                                #
+# all these might be better with some other distribution than normal?                                #
 ########################################################################################################
 
 # this is actually working
@@ -127,6 +127,6 @@ def log_diff_probs_loss(input, target):
     return - torch.log(tmp10)
 
 ########################################################################################################
-# all these might need better with some other distribution than normal?                                #
+# all these might be better with some other distribution than normal?                                #
 ########################################################################################################
 
