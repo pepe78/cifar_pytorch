@@ -16,7 +16,7 @@ Max test accuracy: 95.8 %
 
 Results for [RESNET18](https://arxiv.org/pdf/1512.03385.pdf):
 
-Max test accuracy: ~ 95.3 - 95.8 % (different runs give different results a bit)
+Max test accuracy: ~ 95.2 - 95.8 % (different runs give different results a bit)
 
 ![RESNET18 results](./results/RESNET18.png)
 
@@ -37,6 +37,8 @@ And in 3D (proc_feats_3d.py):
 [Video of feature evolution in 1D, 2D](https://www.youtube.com/watch?v=WbPf8EG-JnQ)
 
 [Video of feature evolution in 1D, 2D, 3D](https://www.youtube.com/watch?v=k9tVFuk_XW4)
+
+[Video for cross entropy evolution](https://www.youtube.com/watch?v=RN7T2PEjd6g)
 
 Looking at features separately and their values for different classes (python3 play_feats.py), it seems like one feature is affiliated with several classes and they might be in a bit different spectrum as well (blue - train, red - test):
 
