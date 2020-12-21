@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import sys
 import numpy as np
 import math as m
+import os
 
 def addsubgraph(figshape, which, t, q1, q2, lab):
 	plt.subplot2grid(figshape,which)
@@ -30,8 +31,10 @@ def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None
         plt.show()
     else: 
         plt.draw()
-        #epoch += 100
-        #plt.savefig(f"epoch_{epoch}.png")
+        if not os.path.isdir('./tmp'):
+            os.mkdir('./tmp')
+        
+        plt.savefig(f"./tmp/epoch_{epoch:04d}.png")
         plt.pause(0.01)
 
 def display_clusters(H,Y,H_t,Y_t, figshape, epoch):
