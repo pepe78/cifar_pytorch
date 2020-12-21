@@ -54,6 +54,11 @@ def std_loss(input, target):
 # this is actually working
 # accuracy ~ 93.89 % - needs more work [like p(x>y) = p(x-y>0) instead of interscetion?]
 # second run gave around ~ 93.85 %
+# third run ~ 93.84 % (https://www.youtube.com/watch?v=io-i7Vgvfq8)
+# if you look at video, you will see that:
+# 1. red curve is way higher, different distribution
+# 2. blue curve does not bother going to 9.0 as wanted
+# hence this should be easily improvable?
 def bell_curves_intersection_loss(input, target):
     tmp = torch.ones(input.shape, requires_grad=False) * (-1.0)
     for i in range(input.shape[0]):
