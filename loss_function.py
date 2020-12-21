@@ -58,6 +58,8 @@ def std_loss(input, target):
 
 # better settings:
 # batch_size=256 (more stable estimates)
+# because of relu's, it looks more like 'Power Lognormal Distribution'
+# https://www.itl.nist.gov/div898/handbook/eda/section3/eda366e.htm
 def diff_probsX_loss(input, target):
     tmp = torch.zeros(input.shape, requires_grad=False)
     for i in range(input.shape[0]):
