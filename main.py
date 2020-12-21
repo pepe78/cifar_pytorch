@@ -93,6 +93,7 @@ def std_loss(input, target):
 
 # this is actually working
 # accuracy ~ 93.89 % - needs more work [like p(x>y) = p(x-y>0) instead of interscetion?]
+# second run gave around ~ 93.85 %
 def bell_curves_intersection_loss(input, target):
     tmp = torch.ones(input.shape, requires_grad=False) * (-1.0)
     for i in range(input.shape[0]):
@@ -104,7 +105,7 @@ def bell_curves_intersection_loss(input, target):
     tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1] - 1.0)
     tmp4 = torch.sqrt(tmp3)
     
-    tmp5 = torch.tensor(range(10001), requires_grad=False).to('cuda') * 14.0 / 10000.0 - 3.0
+    tmp5 = torch.tensor(range(10001), requires_grad=False).to('cuda') * 24.0 / 10000.0 - 8.0
     
     tmp6 = (tmp5 + 1.0) / tmp4
     tmp7 = torch.exp(-0.5 * tmp6 * tmp6) / (tmp4 * math.sqrt(2.0 * math.pi))
@@ -118,6 +119,30 @@ def bell_curves_intersection_loss(input, target):
     tmp11 = torch.maximum(tmp7,tmp9).sum()
     
     return tmp10 / tmp11
+
+# this works as well, which is less surprising, though results are bit worse
+# ~ 92.5 %
+def diff_probs_loss(input, target):
+    tmp = torch.ones(input.shape, requires_grad=False) * (-1.0)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 9.0
+    
+    tmp = tmp.to('cuda')
+    tmp = input - tmp
+    tmp2 = tmp * tmp
+    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1] - 1.0)
+    tmp4 = torch.sqrt(tmp3) * math.sqrt(2)
+    
+    tmp5 = torch.tensor(range(10001), requires_grad=False).to('cuda') * 20.0 / 10000.0
+    
+    tmp6 = (tmp5 - 10.0) / tmp4
+    tmp7 = torch.exp(-0.5 * tmp6 * tmp6) / (tmp4 * math.sqrt(2.0 * math.pi))
+    tmp7 = tmp7.view(-1,1)
+
+    tmp10 = tmp7.sum() * 20.0 / 10000.0
+    
+    #print(tmp10)
+    return 1.0 - tmp10
 
 # Model
 print('==> Building model..')
@@ -159,7 +184,7 @@ def train(epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, targets)
-        #loss = std_loss(outputs, targets)
+        #loss = diff_probs_loss(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -193,7 +218,7 @@ def test(epoch):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
-            #loss = std_loss(outputs, targets)
+            #loss = diff_probs_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
