@@ -30,6 +30,7 @@ def log_sm_loss(input, target):
 # standard deviation loss
 # works pretty well, one run gave me 95.35 % accuracy [95.2 - 95.8 % for log_sm_loss]
 # second run 95.34 % accuracy
+# third run 95.19 % accuracy
 def std_loss(input, target):
     # here is bit of cheating - I ask for outputs to be -1 for incorrect and 9 for correct cases
     # could be verified if other values work as well or
