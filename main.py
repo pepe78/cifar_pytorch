@@ -62,7 +62,7 @@ print('==> Building model..')
 net = ResNet18()
 #net = WideResNet(16, 8, 0.0, in_channels=3, labels=10)
 
-args.lr = 0.01
+args.lr = 0.1
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
