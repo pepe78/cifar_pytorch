@@ -62,7 +62,7 @@ print('==> Building model..')
 net = ResNet18()
 #net = WideResNet(16, 8, 0.0, in_channels=3, labels=10)
 
-args.lr = 0.1
+args.lr = 0.01
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
@@ -96,7 +96,7 @@ def train(epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, targets)
-        #loss = std_loss(outputs, targets)
+        #loss = diff_probsX_loss(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -113,7 +113,7 @@ def train(epoch):
     H = torch.cat(H,0).detach().numpy()
     Y = torch.cat(Y,0).numpy()
 
-    return train_loss / len(trainloader) / trainloader.batch_size, 100.*correct/total, H, Y
+    return train_loss / len(trainloader), 100.*correct/total, H, Y
 
 
 def test(epoch):
@@ -130,7 +130,7 @@ def test(epoch):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
-            #loss = std_loss(outputs, targets)
+            #loss = diff_probsX_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
@@ -159,7 +159,7 @@ def test(epoch):
     H = torch.cat(H,0).detach().numpy()
     Y = torch.cat(Y,0).numpy()
 
-    return test_loss / len(testloader) / trainloader.batch_size, 100.*correct/total, H, Y
+    return test_loss / len(testloader), 100.*correct/total, H, Y
 
 tr_ls = []
 tr_as = []
