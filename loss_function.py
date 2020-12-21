@@ -55,6 +55,10 @@ def std_loss(input, target):
 # compute average of wrong value and correct value separately and comute their stds
 # plug into formulas and go (seems to be working)
 # this way I don't have to set what values I want for wrong and correct cases - it should figure on its own
+
+# better settings:
+# args.lr = 0.01 (it was too "jumpy")
+# batch_size=256 (more stable estimates)
 def diff_probsX_loss(input, target):
     tmp = torch.zeros(input.shape, requires_grad=False)
     for i in range(input.shape[0]):
