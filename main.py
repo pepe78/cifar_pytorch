@@ -285,7 +285,8 @@ tr_as = []
 te_ls = []
 te_as = []
 
-for epoch in range(start_epoch, start_epoch+225):
+num_epochs = 225
+for epoch in range(start_epoch, start_epoch+num_epochs):
     tr_l, tr_a, tr_H, tr_Y = train(epoch)
     te_l, te_a, te_H, te_Y = test(epoch)
     
@@ -301,4 +302,6 @@ for epoch in range(start_epoch, start_epoch+225):
     file1.close()
     
     scheduler.step()
+
+os.system(f"ffmpeg -r 10 -f image2 -s 2500x1200 -start_number {start_epoch} -i ./tmp/epoch_%04d.png -vframes {num_epochs} -vcodec libx264 -crf 25  -pix_fmt yuv420p test.mp4")
 
