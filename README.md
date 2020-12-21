@@ -38,9 +38,11 @@ And in 3D (proc_feats_3d.py):
 
 [Video of feature evolution in 1D, 2D, 3D](https://www.youtube.com/watch?v=k9tVFuk_XW4)
 
-[Video for cross entropy evolution](https://www.youtube.com/watch?v=RN7T2PEjd6g)
+[Video for cross entropy loss evolution](https://www.youtube.com/watch?v=RN7T2PEjd6g)
 
-[Video for standard deviation evolution](https://www.youtube.com/watch?v=CeKXZEX3_Fs)
+[Video for standard deviation loss evolution](https://www.youtube.com/watch?v=CeKXZEX3_Fs)
+
+[Video for bell's curves intersection loss evolution](https://www.youtube.com/watch?v=io-i7Vgvfq8)
 
 Looking at features separately and their values for different classes (python3 play_feats.py), it seems like one feature is affiliated with several classes and they might be in a bit different spectrum as well (blue - train, red - test):
 
