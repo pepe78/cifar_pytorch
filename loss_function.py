@@ -31,6 +31,8 @@ def log_sm_loss(input, target):
 # works pretty well, one run gave me 95.35 % accuracy [95.2 - 95.8 % for log_sm_loss]
 # second run 95.34 % accuracy
 # third run 95.19 % accuracy
+# optimizing power std^0.5 - one run of 95.50 % (makes it quite competitive with cross entropy
+# optimizing power std^0.1 - one run of 95.18 %
 def std_loss(input, target):
     # here is bit of cheating - I ask for outputs to be -1 for incorrect and 9 for correct cases
     # could be verified if other values work as well or
