@@ -17,9 +17,15 @@ from loss_function import *
 
 import os
 import argparse
+import shutil
 
 from utils import progress_bar
 from disp_results import display_results
+
+if os.path.exists("debug.txt"):
+    os.remove('debug.txt')
+if os.path.isdir('./tmp'):
+    shutil.rmtree('./tmp', ignore_errors=True)
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
@@ -96,7 +102,7 @@ def train(epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, targets)
-        #loss = diff_probsX_loss(outputs, targets)
+        #loss = stdX_loss(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -130,7 +136,7 @@ def test(epoch):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
-            #loss = diff_probsX_loss(outputs, targets)
+            #loss = stdX_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
