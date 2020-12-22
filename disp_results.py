@@ -37,18 +37,10 @@ def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None
         plt.savefig(f"./tmp/epoch_{epoch:04d}.png")
         plt.pause(0.01)
 
-def display_clusters(H,Y,H_t,Y_t, figshape, epoch):
-    colors = ['b','g','r','c','m','y','indigo','lime','aqua','peru']
-
-    minval = min(H.min(),H_t.min())
-    maxval = max(H.max(),H_t.max())
-    
-    maxval += 0.001 * (maxval-minval)
-
+def plotProbs(H, Y, minval, maxval):
     numclusters = 300
     counts_cor =[0 for _ in range(numclusters)]
     counts_inc =[0 for _ in range(numclusters)]
-    
     for i in range(H.shape[0]):
         for j in range(H.shape[1]):
             num = int((H[i,j] - minval) * (numclusters + 0.0) / (maxval-minval))
@@ -57,25 +49,22 @@ def display_clusters(H,Y,H_t,Y_t, figshape, epoch):
             else:
                 counts_inc[num] += 1.0 / (H.shape[1] - 1.0)
                 
-    plt.subplot2grid(figshape,(0,3))
     plt.plot([minval + (i + 0.0) *(maxval-minval) / (numclusters + 0.0) for i in range(numclusters)], counts_cor, 'b')
     plt.plot([minval + (i + 0.0) *(maxval-minval) / (numclusters + 0.0) for i in range(numclusters)], counts_inc, 'r')
 
-    counts_cor =[0 for _ in range(numclusters)]
-    counts_inc =[0 for _ in range(numclusters)]
+def display_clusters(H,Y,H_t,Y_t, figshape, epoch):
+    colors = ['b','g','r','c','m','y','indigo','lime','aqua','peru']
+
+    minval = min(H.min(),H_t.min())
+    maxval = max(H.max(),H_t.max())
     
-    for i in range(H_t.shape[0]):
-        for j in range(H_t.shape[1]):
-            num = int((H_t[i,j] - minval) * (numclusters + 0.0) / (maxval-minval))
-            if Y_t[i] == j:
-                counts_cor[num] += 1.0
-            else:
-                counts_inc[num] += 1.0 / (H_t.shape[1] - 1.0)
-                
+    maxval += 0.001 * (maxval-minval)
+
+    plt.subplot2grid(figshape,(0,3))
+    plotProbs(H, Y, minval, maxval)
     plt.subplot2grid(figshape,(1,3))
-    plt.plot([minval + (i + 0.0) *(maxval-minval) / (numclusters + 0.0) for i in range(numclusters)], counts_cor, 'b')
-    plt.plot([minval + (i + 0.0) *(maxval-minval) / (numclusters + 0.0) for i in range(numclusters)], counts_inc, 'r')
-    
+    plotProbs(H_t, Y_t, minval, maxval)
+
     H = np.concatenate((H,np.ones((H.shape[0],1))),axis=1)
     H_t = np.concatenate((H_t,np.ones((H_t.shape[0],1))),axis=1)
     
