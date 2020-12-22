@@ -68,14 +68,11 @@ def stdX_loss(input, target, magicNumber = 1.0):
 # instead of approximating two curves, approximate only difference
 def diff_probsXX_loss(input, target):
     tmp = torch.zeros(input.shape, requires_grad=False)
-    correct = []
     for i in range(input.shape[0]):
         tmp[i,target[i]] = 1.0
-        correct.append(input[i,target[i]].view(-1,1))
-
     tmp = tmp.to('cuda')
     
-    correct = torch.cat(correct,dim=0)
+    correct = input.gather(1, target.view(-1,1))
     matCor = []
     for i in range(input.shape[1]):
         matCor.append(correct)
