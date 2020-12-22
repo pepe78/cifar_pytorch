@@ -38,6 +38,8 @@ def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None
         plt.pause(0.01)
 
 def plotProbs(H, Y, minval, maxval):
+    dif = []
+
     numclusters = 300
     counts_cor =[0 for _ in range(numclusters)]
     counts_inc =[0 for _ in range(numclusters)]
@@ -48,9 +50,21 @@ def plotProbs(H, Y, minval, maxval):
                 counts_cor[num] += 1.0
             else:
                 counts_inc[num] += 1.0 / (H.shape[1] - 1.0)
+                dif.append(H[i,Y[i]] - H[i,j])
                 
     plt.plot([minval + (i + 0.0) *(maxval-minval) / (numclusters + 0.0) for i in range(numclusters)], counts_cor, 'b')
     plt.plot([minval + (i + 0.0) *(maxval-minval) / (numclusters + 0.0) for i in range(numclusters)], counts_inc, 'r')
+    
+    minval2 = min(dif)
+    maxval2 = max(dif)
+    maxval2 += 0.001 * (maxval2-minval2)
+
+    counts_dif =[0 for _ in range(numclusters)]
+    for i in range(len(dif)):
+        num = int((dif[i] - minval2) * (numclusters + 0.0) / (maxval2-minval2))
+        counts_dif[num] += 1.0 / (H.shape[1] - 1.0)
+        
+    plt.plot([minval2 + (i + 0.0) *(maxval2-minval2) / (numclusters + 0.0) for i in range(numclusters)], counts_dif, 'g')
 
 def display_clusters(H,Y,H_t,Y_t, figshape, epoch):
     colors = ['b','g','r','c','m','y','indigo','lime','aqua','peru']
