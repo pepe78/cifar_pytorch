@@ -27,6 +27,17 @@ def log_sm_loss(input, target):
     
     return loss.sum() / target.shape[0]
 
+
+
+#*******************************************************************************************************
+# all the functions below don't use soft max (cross entropy above does)                                *
+# the reason why i want to remove it is because it makes assumption that softmax produces              *
+# probabilities, but that is just an assumption and just an estimation of probability.                 *
+# Functions below try to do more probability based approach without softmax                            *
+#*******************************************************************************************************
+
+
+
 # standard deviation loss
 # works pretty well, one run gave me 95.35 % accuracy [95.2 - 95.8 % for log_sm_loss]
 # second run 95.34 % accuracy
