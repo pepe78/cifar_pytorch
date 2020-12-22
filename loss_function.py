@@ -47,8 +47,22 @@ def std_loss(input, target):
     
     return tmp4
 
+# what's the magic number?
+def stdX_loss(input, target, magicNumber = 1.0):
+    tmp = torch.ones(input.shape, requires_grad=False) * (-0.5)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 0.5
+    
+    tmp = tmp.to('cuda')
+    tmp = input - tmp
+    tmp2 = tmp * tmp
+    tmp3 = tmp2.sum() / (input.shape[0] * input.shape[1] - 1.0)
+    tmp4 = torch.pow(tmp3, 0.5 * magicNumber)
+    
+    return tmp4
+    
 ########################################################################################################
-# all these might be better with some other distribution than normal?                                #
+# all these might be better with some other distribution than normal?                                  #
 ########################################################################################################
 
 # more generic P(X-Y > 0)
@@ -60,6 +74,7 @@ def std_loss(input, target):
 # batch_size=256 (more stable estimates)
 # because of relu's, it looks more like 'Power Lognormal Distribution'
 # https://www.itl.nist.gov/div898/handbook/eda/section3/eda366e.htm
+# https://www.youtube.com/watch?v=N54TTUdxyJ8
 def diff_probsX_loss(input, target):
     tmp = torch.zeros(input.shape, requires_grad=False)
     for i in range(input.shape[0]):
@@ -179,6 +194,6 @@ def log_diff_probs_loss(input, target):
     return - torch.log(tmp10)
 
 ########################################################################################################
-# all these might be better with some other distribution than normal?                                #
+# all these might be better with some other distribution than normal?                                  #
 ########################################################################################################
 
