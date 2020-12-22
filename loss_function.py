@@ -66,6 +66,9 @@ def stdX_loss(input, target, magicNumber = 1.0):
 ########################################################################################################
 
 # instead of approximating two curves, approximate only difference
+# train batch size 256 - more stable
+# no scheduler
+# no weigth decay
 def diff_probsXX_loss(input, target):
     tmp = torch.zeros(input.shape, requires_grad=False)
     for i in range(input.shape[0]):
