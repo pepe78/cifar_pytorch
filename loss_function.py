@@ -65,6 +65,43 @@ def stdX_loss(input, target, magicNumber = 1.0):
 # all these might be better with some other distribution than normal?                                  #
 ########################################################################################################
 
+# instead of approximating two curves, approximate only difference
+def diff_probsXX_loss(input, target):
+    tmp = torch.zeros(input.shape, requires_grad=False)
+    correct = []
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 1.0
+        correct.append(input[i,target[i]].view(-1,1))
+
+    tmp = tmp.to('cuda')
+    
+    correct = torch.cat(correct,dim=0)
+    matCor = []
+    for i in range(input.shape[1]):
+        matCor.append(correct)
+    matCor = torch.cat(matCor, dim=1)
+    
+    tmp2 = matCor - input
+
+    av = tmp2.sum() / (input.shape[0] * (input.shape[1]-1) + 0.0)
+    
+    tmp6 = tmp2 - (1.0 - tmp) * av
+    tmp7 = tmp6 * tmp6
+    stdP = tmp7.sum() / (input.shape[0] * (input.shape[1] - 1) - 1.0)
+    std = torch.sqrt(stdP)        
+    
+    mv = av + math.sqrt(10) * std # this leads ot exp(-5.0), which is only 0.006737946999085
+    tmp8 = torch.tensor(range(10001), requires_grad=False).to('cuda') * mv / 10000.0
+    
+    tmp9 = (tmp8 - av) / std
+    tmp10 = torch.exp(-0.5 * tmp9 * tmp9) / (std * math.sqrt(2.0 * math.pi))
+    tmp10 = tmp10.view(-1,1)
+
+    tmp11 = tmp10.sum() * mv / 10000.0
+    
+    #print(tmp11)
+    return 1.0 - tmp11
+
 # more generic P(X-Y > 0)
 # compute average of wrong value and correct value separately and comute their stds
 # plug into formulas and go (seems to be working)
@@ -109,6 +146,7 @@ def diff_probsX_loss(input, target):
 
     tmp11 = tmp10.sum() * mv / 10000.0
     
+    print(av1, av2)
     #print(tmp11)
     return 1.0 - tmp11
 
