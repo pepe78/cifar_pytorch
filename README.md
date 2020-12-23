@@ -1,5 +1,11 @@
 # cifar pytorch
 
+Resnet + [SAM optimizer](https://github.com/davda54/sam) ([Sharpness-Aware Minimization for Efficiently Improving Generalization](https://arxiv.org/abs/2010.01412)). Outputs coming from Resnet with SAM optimizer are still looking pretty [log-normal](https://en.wikipedia.org/wiki/Log-normal_distribution).
+
+Max test accuracy: 96.21 %
+
+![ResnetSam results](./results/ResnetSam.png)
+
 Original script and models from Resnet & Densenet came from [https://github.com/kuangliu/pytorch-cifar](https://github.com/kuangliu/pytorch-cifar)
 
 Results for [WideResnet](https://arxiv.org/pdf/1605.07146.pdf) with model [https://github.com/davda54/sam/blob/main/example/model/wide_res_net.py](https://github.com/davda54/sam/blob/main/example/model/wide_res_net.py):
