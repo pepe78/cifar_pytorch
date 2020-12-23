@@ -102,7 +102,7 @@ def train(epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, targets)
-        #loss = stdX_loss(outputs, targets)
+        #loss = std_loss(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -136,7 +136,7 @@ def test(epoch):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)
             loss = criterion(outputs, targets)
-            #loss = stdX_loss(outputs, targets)
+            #loss = std_loss(outputs, targets)
 
             test_loss += loss.item()
             _, predicted = outputs.max(1)
