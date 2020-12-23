@@ -64,6 +64,38 @@ def std_loss(input, target):
 # all these might be better with some other distribution than normal?                                  #
 ########################################################################################################
 
+def diff_probsYY_loss(input, target, epoch):
+    # start up by std loss (as this would notbe able to start)
+    if epoch < 3:
+        return std_loss(input, target)
+
+    tmp = torch.zeros(input.shape, requires_grad=False)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 1.0
+    tmp = tmp.to('cuda')
+    
+    correct = input.gather(1, target.view(-1,1))
+    matCor = []
+    for i in range(input.shape[1]):
+        matCor.append(correct)
+    matCor = torch.cat(matCor, dim=1)
+    
+    tmp2 = matCor - input
+
+    av = tmp2.sum() / (input.shape[0] * (input.shape[1]-1) + 0.0)
+    
+    tmp6 = tmp2 - (1.0 - tmp) * av
+    tmp7 = tmp6 * tmp6
+    stdP = tmp7.sum() / (input.shape[0] * (input.shape[1] - 1) - 1.0)
+    std = torch.sqrt(stdP)   
+    
+    tmp8 = (0 - av) / std     
+    tmp9 =  tmp8 * tmp8
+
+    # this is a bit of cheating, but instead of computing integral
+    # just push the point at 0 down        
+    return -tmp9
+
 # instead of approximating two curves, approximate only difference
 # train batch size 256 - more stable
 # no scheduler
