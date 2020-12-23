@@ -67,6 +67,8 @@ def std_loss(input, target):
 # it still looks like log-normal, so i will have to figure out how to approximate it
 # instead of computing average and standard deviation and assuming it's normal distribution
 # this works with 128 train batch, and usual parameters (lr=0.1,scheduler,weight decay)
+# 94.53 % - progress
+# https://www.youtube.com/watch?v=SLhposI0xdE
 def diff_probsYY_loss(input, target, epoch):
     # start up by std loss (as this would notbe able to start)
     if epoch < 3:
