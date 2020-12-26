@@ -18,14 +18,22 @@ from loss_function import *
 import os
 import argparse
 import shutil
+import glob
 
 from utils import progress_bar
 from disp_results import display_results
 
-if os.path.exists("debug.txt"):
-    os.remove('debug.txt')
-if os.path.isdir('./tmp'):
-    shutil.rmtree('./tmp', ignore_errors=True)
+dirnum = 0
+while os.path.isdir("./experiment_" + str(dirnum)):
+    dirnum += 1
+dirname = "./experiment_" + str(dirnum) + "/"
+print(dirname)
+os.mkdir(dirname)
+os.mkdir(dirname + 'sc')
+for file in glob.glob('./*.py'):
+    shutil.copy(file, dirname + 'sc')
+for file in glob.glob('./models/*.py'):
+    shutil.copy(file, dirname + 'sc')
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
@@ -157,9 +165,9 @@ def test(epoch):
             'acc': acc,
             'epoch': epoch,
         }
-        if not os.path.isdir('checkpoint'):
-            os.mkdir('checkpoint')
-        torch.save(state, './checkpoint/ckpt.pth')
+        if not os.path.isdir(dirname + 'checkpoint'):
+            os.mkdir(dirname + 'checkpoint')
+        torch.save(state, dirname + 'checkpoint/ckpt.pth')
         best_acc = acc
     
     H = torch.cat(H,0).detach().numpy()
@@ -181,10 +189,10 @@ for epoch in range(start_epoch, start_epoch+num_epochs):
     tr_as.append(tr_a)
     te_ls.append(te_l)
     te_as.append(te_a)
-    display_results(tr_as,te_as,tr_ls,te_ls, False, tr_H, tr_Y, te_H, te_Y, epoch)
+    display_results(tr_as,te_as,tr_ls,te_ls, False, tr_H, tr_Y, te_H, te_Y, epoch, dirname)
     print(max(tr_as), "% ", max(te_as), "%")
     
-    file1 = open("debug.txt", "a")  # append mode 
+    file1 = open(dirname + "debug.txt", "a")  # append mode 
     file1.write(f"{epoch},{tr_l},{tr_a},{te_l},{te_a}\n") 
     file1.close()
     

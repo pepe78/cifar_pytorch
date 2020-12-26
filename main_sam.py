@@ -23,10 +23,6 @@ import shutil
 from utils import progress_bar
 from disp_results import display_results
 
-if os.path.exists("debug.txt"):
-    os.remove('debug.txt')
-if os.path.isdir('./tmp'):
-    shutil.rmtree('./tmp', ignore_errors=True)
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')

@@ -13,7 +13,7 @@ def addsubgraph(figshape, which, t, q1, q2, lab):
 	plt.grid(color='k', linestyle=':', linewidth=1)
 	plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left', ncol=2, mode="expand", borderaxespad=0.)
 		   
-def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None, te_H = None, te_Y = None, epoch = 0):
+def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None, te_H = None, te_Y = None, epoch = 0, dirname = './'):
     figure = plt.figure(num='Progress of training', figsize = (15,12) if tr_H is None else (25,12))
     plt.clf()
 
@@ -31,10 +31,10 @@ def display_results(a1, a2, e1, e2, waitForGraph=False, tr_H = None, tr_Y = None
         plt.show()
     else: 
         plt.draw()
-        if not os.path.isdir('./tmp'):
-            os.mkdir('./tmp')
+        if not os.path.isdir(dirname + 'tmp'):
+            os.mkdir(dirname + 'tmp')
         
-        plt.savefig(f"./tmp/epoch_{epoch:04d}.png")
+        plt.savefig(f"{dirname}tmp/epoch_{epoch:04d}.png")
         plt.pause(0.01)
 
 def plotProbs(H, Y, minval, maxval):
