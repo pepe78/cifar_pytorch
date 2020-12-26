@@ -20,8 +20,8 @@ import argparse
 import shutil
 import glob
 
-from utils import progress_bar
-from disp_results import display_results
+from utils.utils import progress_bar
+from utils.disp_results import display_results
 
 dirnum = 0
 while os.path.isdir("./experiment_" + str(dirnum)):
