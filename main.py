@@ -198,5 +198,5 @@ for epoch in range(start_epoch, start_epoch+num_epochs):
     
     scheduler.step()
 
-os.system(f"ffmpeg -r 10 -f image2 -s 2500x1200 -start_number {start_epoch} -i ./tmp/epoch_%04d.png -vframes {num_epochs} -vcodec libx264 -crf 25  -pix_fmt yuv420p test.mp4")
+os.system(f"ffmpeg -r 10 -f image2 -s 2500x1200 -start_number {start_epoch} -i {dirname}tmp/epoch_%04d.png -vframes {num_epochs} -vcodec libx264 -crf 25  -pix_fmt yuv420p {dirname}test.mp4")
 
