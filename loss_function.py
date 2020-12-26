@@ -28,6 +28,25 @@ def log_sm_loss(input, target):
     return loss.sum() / target.shape[0]
 
 
+# lim alpha -> 0 => same as log_sm_loss
+# alpha = 0.02 & speed = 0.1 => 95.53 % test accuracy
+def power_loss(input, target, alpha = 0.02, speed = 0.1):
+    eout = torch.exp(input)
+    seout = torch.sum(eout,dim=1)
+
+    tmp = torch.zeros(input.shape, requires_grad=False)
+    for i in range(input.shape[0]):
+        tmp[i,target[i]] = 1.0
+   
+    tmp = tmp.to('cuda')
+    tmp2 = eout * tmp
+    tmp3 = torch.sum(tmp2,dim=1)
+    
+    loss = torch.pow(seout / tmp3, alpha) / alpha
+    
+    return speed * loss.sum() / target.shape[0]
+
+
 def smooth_crossentropy(pred, gold, smoothing=0.1):
     n_class = pred.size(1)
 
