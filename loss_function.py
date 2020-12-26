@@ -17,11 +17,9 @@ def log_sm_loss(input, target):
     seout = torch.sum(eout,dim=1)
 
     loss = torch.log(seout)
-    tmp = torch.zeros(input.shape, requires_grad=False)
-    for i in range(input.shape[0]):
-        tmp[i,target[i]] = 1.0
+    tmp = torch.full_like(input, fill_value=0.0)
+    tmp.scatter_(dim=1, index=target.unsqueeze(1), value=1.0)
     
-    tmp = tmp.to('cuda')
     tmp *= input
     loss -= torch.sum(tmp,dim=1)
     
@@ -34,11 +32,9 @@ def power_loss(input, target, alpha = 0.02, speed = 0.1):
     eout = torch.exp(input)
     seout = torch.sum(eout,dim=1)
 
-    tmp = torch.zeros(input.shape, requires_grad=False)
-    for i in range(input.shape[0]):
-        tmp[i,target[i]] = 1.0
+    tmp = torch.full_like(input, fill_value=0.0)
+    tmp.scatter_(dim=1, index=target.unsqueeze(1), value=1.0)
    
-    tmp = tmp.to('cuda')
     tmp2 = eout * tmp
     tmp3 = torch.sum(tmp2,dim=1)
     
