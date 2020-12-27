@@ -26,28 +26,6 @@ def log_sm_loss(input, target):
     return loss.sum() / target.shape[0]
 
 
-# lim alpha -> 0 => same as log_sm_loss
-# alpha = 0.0001 & speed = 0.1 => 95.74 % test accuracy
-# alpha = 0.5 & speed = 0.01 => 95.28 % test accuracy (spikey 2d class display results)
-# alpha = 0.1 & speed = 0.1 => 95.49 % test accuracy
-# alpha = 0.05 & speed = 0.1 => 95.58 % test accuracy
-# alpha = 0.02 & speed = 0.1 => 95.53 % test accuracy
-# alpha = -0.02 & speed = 0.1 => 95.34 % test accuracy
-def power_loss(input, target, alpha = 0.0001, speed = 0.1):
-    eout = torch.exp(input)
-    seout = torch.sum(eout,dim=1)
-
-    tmp = torch.full_like(input, fill_value=0.0)
-    tmp.scatter_(dim=1, index=target.unsqueeze(1), value=1.0)
-   
-    tmp2 = eout * tmp
-    tmp3 = torch.sum(tmp2,dim=1)
-    
-    loss = torch.pow(seout / tmp3, alpha) * (speed / alpha)
-    
-    return loss.sum() / target.shape[0]
-
-
 def smooth_crossentropy(pred, gold, smoothing=0.1):
     n_class = pred.size(1)
 
