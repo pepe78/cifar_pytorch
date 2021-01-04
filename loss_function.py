@@ -13,12 +13,8 @@ def log_sm_loss(input, target):
     eout = torch.exp(input)
     seout = torch.sum(eout,dim=1)
 
-    loss = torch.log(seout)
-    tmp = torch.full_like(input, fill_value=0.0)
-    tmp.scatter_(dim=1, index=target.unsqueeze(1), value=1.0)
-    
-    tmp *= input
-    loss -= torch.sum(tmp,dim=1)
+    loss = torch.log(seout).view(-1,1)
+    loss -= torch.gather(input, dim=1, index=target.unsqueeze(1)).view(-1,1)
     
     return loss.sum() / target.shape[0]
 
