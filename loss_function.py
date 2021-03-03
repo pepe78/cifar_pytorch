@@ -8,6 +8,18 @@ import torchvision
 import torchvision.transforms as transforms
 import math
 
+# on par with std_loss
+def sigmoid_loss(input, target, a0=1.0, a1=1.0, a2=1.0):
+    m1 = torch.full_like(input, fill_value=1.0)
+    m1.scatter_(dim=1, index=target.unsqueeze(1), value=0.0)
+
+    inp2 = torch.max(input * m1,dim=1).values.view(-1,1)
+    inp3 = torch.gather(input, dim=1, index=target.unsqueeze(1)).view(-1,1)
+    
+    inp4 = inp2 - inp3
+    inp5 = 1.0 / (a0 + torch.exp(a1 - a2 * inp4))
+
+    return 0.1 * inp5.sum() / target.shape[0]
 
 def log_sm_loss(input, target):
     eout = torch.exp(input)
