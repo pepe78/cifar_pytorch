@@ -9,7 +9,7 @@ import torchvision.transforms as transforms
 import math
 
 # on par with std_loss
-# [https://www.youtube.com/watch?v=DCJEWIv8dXY](https://www.youtube.com/watch?v=DCJEWIv8dXY)
+# https://www.youtube.com/watch?v=DCJEWIv8dXY
 def sigmoid_loss(input, target, a0=1.0, a1=1.0, a2=1.0):
     m1 = torch.full_like(input, fill_value=1.0)
     m1.scatter_(dim=1, index=target.unsqueeze(1), value=0.0)
