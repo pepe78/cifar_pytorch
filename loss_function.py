@@ -9,6 +9,7 @@ import torchvision.transforms as transforms
 import math
 
 # on par with std_loss
+# https://www.youtube.com/watch?v=DCJEWIv8dXY
 def sigmoid_loss(input, target, a0=1.0, a1=1.0, a2=1.0):
     m1 = torch.full_like(input, fill_value=1.0)
     m1.scatter_(dim=1, index=target.unsqueeze(1), value=0.0)
@@ -21,6 +22,7 @@ def sigmoid_loss(input, target, a0=1.0, a1=1.0, a2=1.0):
 
     return 0.1 * inp5.sum() / target.shape[0]
 
+# https://www.youtube.com/watch?v=RN7T2PEjd6g
 def log_sm_loss(input, target):
     eout = torch.exp(input)
     seout = torch.sum(eout,dim=1)
@@ -30,7 +32,7 @@ def log_sm_loss(input, target):
     
     return loss.sum() / target.shape[0]
 
-
+# https://www.youtube.com/watch?v=n_lHHflX-YQ   (+SAM)
 def smooth_crossentropy(pred, gold, smoothing=0.1):
     n_class = pred.size(1)
 
@@ -40,7 +42,7 @@ def smooth_crossentropy(pred, gold, smoothing=0.1):
 
     return F.kl_div(input=log_prob, target=one_hot, reduction='none').sum(-1)
 
-
+# https://www.youtube.com/watch?v=CeKXZEX3_Fs
 def std_loss(input, target):
     tmp = torch.full_like(input, fill_value = -0.5)
     tmp.scatter_(dim = 1, index = target.unsqueeze(1), value = 0.5)
